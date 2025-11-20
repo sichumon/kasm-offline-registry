@@ -249,6 +249,7 @@ If you are the one doing the searching, click on the **site** folder, then click
 
 KASM-REGISTRY-DISCOVERY-IDENTIFIER
 
+```mermaid
 flowchart LR
     subgraph Inbound["Inbound Adapters"]
         API[REST API]
@@ -287,4 +288,4 @@ flowchart LR
     AGG --> DB
     AGG --> MQ2
     E1 --> EXT
-
+```

@@ -289,7 +289,7 @@ flowchart LR
     AGG --> MQ2
     E1 --> EXT
 ```
-```mermain
+```mermaid
 flowchart LR
     %% Internal domain contexts that use Integration
     subgraph Internal Domains

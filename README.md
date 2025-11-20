@@ -248,3 +248,43 @@ If you are the one doing the searching, click on the **site** folder, then click
 ![search-600](https://user-images.githubusercontent.com/5698566/230614274-2976b4d7-074f-4e6d-9e58-e4d2512a3d2a.gif)
 
 KASM-REGISTRY-DISCOVERY-IDENTIFIER
+
+flowchart LR
+    subgraph Inbound["Inbound Adapters"]
+        API[REST API]
+        UI[Web UI]
+        MQ1[Message Queue\nSubscriber]
+    end
+    
+    subgraph Core["Clinical Review Domain"]
+        subgraph App["Application Layer"]
+            UC1[ReviewCase]
+            UC2[ApproveT reatment]
+            UC3[AddNotes]
+        end
+        
+        subgraph Domain["Domain Layer"]
+            AGG[ClinicalCase\nAggregate]
+            E1[ClinicalDecision]
+            E2[Notes]
+        end
+    end
+    
+    subgraph Outbound["Outbound Adapters"]
+        DB[(Database)]
+        MQ2[Event Publisher]
+        EXT[External\nServices]
+    end
+    
+    API --> UC1
+    UI --> UC2
+    MQ1 --> UC3
+    
+    UC1 --> AGG
+    UC2 --> AGG
+    UC3 --> E2
+    
+    AGG --> DB
+    AGG --> MQ2
+    E1 --> EXT
+

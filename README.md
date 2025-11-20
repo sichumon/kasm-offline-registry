@@ -306,19 +306,26 @@ flowchart LR
     subgraph Integration Layer
         integration["**Integration Context**<br/>*(External API adapters)*"]
     end
-    subgraph External Systems
-        direction TB
-        stripe[Stripe/Adyen (Payments)]
-        acmeStore[ACME Store Portal]
-        acmeLoyalty[ACME Loyalty API]
-        acmeSap[ACME SAP (Pharmacy system)]
-        nhs[NHS Systems (PDS/EPS/GP)]
-        docman[DocMan (NHS Docs)]
-        kyc[KYC/ID Verification Service]
-        ciam[Cognito/CIAM Identity Provider]
-        commProv[SMS/Email Providers]
-        logistics[Courier/Logistics API]
-    end
+   
+    %% Internal to Integration calls
+    orderInt -->|"Payment API call"| integration
+    fulfilInt -->|"Store/Logistics request"| integration
+    notifInt -->|"Email/SMS send"| integration
+    idInt -->|"External ID verify"| integration
+    clinicalInt -->|"NHS lookup"| integration
+    prescrInt -->|"eRx transfer"| integration
+    opsInt -->|"(Store system access)"| integration
 
+    %% Integration to External calls
+    integration -->|"Process Payment"| stripe
+    integration -->|"(Submit Order)"| acmeStore
+    integration -->|"(Update Loyalty)"| acmeLoyalty
+    integration -->|"(Enterprise Sync)"| acmeSap
+    integration -->|"Patient lookup / eRx"| nhs
+    integration -->|"Send documents"| docman
+    integration -->|"ID check API"| kyc
+    integration -->|"AuthN/AuthZ API"| ciam
+    integration -->|"Send SMS/Email"| commProv
+    integration -->|"Shipment API"| logistics
 
 ```

@@ -329,3 +329,34 @@ flowchart LR
     integration -->|"Shipment API"| logistics
 
 ```
+```mermaid
+flowchart LR
+    %% Core domain contexts and their interactions
+    subgraph Core Domains
+        direction TB
+        onboarding["**Patient Onboarding**<br/>*(Registration, Identity, Questionnaire)*"]
+        returning["**Returning Patient**<br/>*(Existing patient re-access, new requests)*"]
+        clinical["**Clinical Review**<br/>*(Case review & approval)*"]
+        comms["**Communication**<br/>*(Chat & Video Consultations)*"]
+        prescription["**Prescription**<br/>*(Generate & manage Rx)*"]
+        fulfilment["**Fulfilment**<br/>*(Dispense & deliver orders)*"]
+        catalog["**Product Catalog**<br/>*(Treatments & rules)*"]
+        order["**Order & Payment**<br/>*(Checkout & payments)*"]
+    end
+
+    %% Core interactions (dependencies, event flows)
+    onboarding -->|"Start Case"| clinical
+    returning -->|"(Re)Start Case"| clinical
+    onboarding -->|"(Initial) Order Request"| order
+    returning -->|"New/Refill Order"| order
+    onboarding -->|"(Select) Product Info"| catalog
+    returning -->|"(Select) Product Info"| catalog
+    returning -->|"(Fetch/Update) Profile"| onboarding
+    clinical -->|"Request Prescription"| prescription
+    clinical -->|"Initiate Consult"| comms
+    clinical -->|"Fetch Guidelines"| catalog
+    prescription -->|"Rx Ready"| fulfilment
+    order -->|"Order Placed"| fulfilment
+    %% (Fulfilment updates Order status after shipping – not shown for simplicity)
+<img width="468" height="436" alt="image" src="https://github.com/user-attachments/assets/ce8d2660-8c24-4136-b723-6cf6a44ed939" />
+```

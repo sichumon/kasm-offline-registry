@@ -289,6 +289,7 @@ flowchart LR
     AGG --> MQ2
     E1 --> EXT
 ```
+
 ```mermaid
 flowchart LR
     %% Internal domain contexts that use Integration
@@ -319,24 +320,5 @@ flowchart LR
         logistics[Courier/Logistics API]
     end
 
-    %% Internal to Integration calls
-    orderInt -->|"Payment API call"| integration
-    fulfilInt -->|"Store/Logistics request"| integration
-    notifInt -->|"Email/SMS send"| integration
-    idInt -->|"External ID verify"| integration
-    clinicalInt -->|"NHS lookup"| integration
-    prescrInt -->|"eRx transfer"| integration
-    opsInt -->|"(Store system access)"| integration
 
-    %% Integration to External calls
-    integration -->|"Process Payment"| stripe
-    integration -->|"(Submit Order)"| acmeStore
-    integration -->|"(Update Loyalty)"| acmeLoyalty
-    integration -->|"(Enterprise Sync)"| acmeSap
-    integration -->|"Patient lookup / eRx"| nhs
-    integration -->|"Send documents"| docman
-    integration -->|"ID check API"| kyc
-    integration -->|"AuthN/AuthZ API"| ciam
-    integration -->|"Send SMS/Email"| commProv
-    integration -->|"Shipment API"| logistics
 ```
